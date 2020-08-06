@@ -1,0 +1,27 @@
+#!/bin/bash
+# build the MPL libary (eventually this will be done using a Makefile)
+echo "Building the Message Passing Library (MPL)"
+cd MPL_library_code/
+echo "g++ -c Sender.cpp Receiver.cpp ClientHandler.cpp Message.cpp MPUtils.cpp Cpp11-BlockingQueue.cpp "
+g++ -c Sender.cpp Receiver.cpp ClientHandler.cpp Message.cpp MPUtils.cpp Cpp11-BlockingQueue.cpp 
+echo "ar -rcs libmpl.a *.o"
+ar -rcs libmpl.a *.o
+
+# copy the library into parent folder
+cp ./libmpl.a ../
+
+# build the sender test
+echo "Building the Sender test stub"
+echo "g++ -DTEST_SENDER Sender.cpp libmpl.a -lpthread"
+g++ -DTEST_SENDER -o SenderTest Sender.cpp libmpl.a -lpthread
+cp ./SenderTest ../
+
+# build the Receiver test
+echo "Building the Receiver test stub"
+echo "g++ -DTEST_RECEIVER Receiver.cpp libmpl.a -lpthread"
+g++ -DTEST_RECEIVER -o ReceiverTest Receiver.cpp libmpl.a -lpthread
+cp ./ReceiverTest ../
+rm *.o
+cd ..
+
+
